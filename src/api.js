@@ -1,28 +1,18 @@
-// Nice es6 syntax {user, invitee} = aero.api does not work
-const user = require("./user");
-const invitee = require("./invitee");
-const folder = require("./folder");
-const device = require("./device");
-const group = require("./group");
-const groupmember = require("./groupmember");
-const invitation = require("./invitation");
-const file = require("./file");
-const sf = require("./sharedfolder");
-const sfmember = require("./sharedfoldermember");
-const sfgroupmember = require("./sharedfoldergroupmember");
-const sfpendingmember = require("./sharedfolderpendingmember");
+'use strict';
+const client = require('./client');
 
 module.exports = {
-  user : user,
-  invitee : invitee,
-  folder : folder,
-  device : device,
-  group : group,
-  groupmember : groupmember,
-  invitation : invitation,
-  file : file,
-  sf : sf,
-  sfmember  : sfmember,
-  sfgroupmember : sfgroupmember,
-  sfpendingmember : sfpendingmember
+  user : require('./user'),
+  invitee : require('./invitee'),
+  folder : require('./folder'),
+  device : require('./device'),
+  group : require('./group'),
+  groupmember : require('./groupmember'),
+  invitation : require('./invitation'),
+  file : require('./file'),
+  sf : require('./sharedfolder'),
+  sfmember  : require('./sharedfoldermember'),
+  sfgroupmember : require('./sharedfoldergroupmember'),
+  sfpendingmember : require('./sharedfolderpendingmember'),
+  pending_requests : client.pending_requests
 };

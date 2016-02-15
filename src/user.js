@@ -1,65 +1,75 @@
-const client = require("./client");
-const util = require("./util");
-const USERS_ROUTE = "users";
+'use strict';
+
+const client = require('./client'),
+  util = require('./util'),
+  USERS_ROUTE = 'users';
 
 module.exports = {
-  
   List(limit, after, before) {
-    var params = {
-      "limit" : limit.toString(),
-      "after" : after,
-      "before" : before
+    limit = limit || 0;
+    let params = {
+      'limit' : limit.toString(),
+      'after' : after,
+      'before' : before
     };
-    var path = util.generatePath(USERS_ROUTE, params);
+    let path = util.generatePath(USERS_ROUTE, params);
     return client.get(path);
   },
 
   Get(email) {
-    var route = [USERS_ROUTE, email].join("/");
-    return client.get(route);
+    return client.get(
+      [USERS_ROUTE, email].join('/')
+    );
   },
 
   Update(email, first_name, last_name) {
-    var route = [USERS_ROUTE, email].join("/");
-    var data = { 
-      "first_name" : first_name,
-      "last_name" : last_name
-    };
-    return client.put(route, data);
+    return client.put(
+      [USERS_ROUTE, email].join('/'),
+      { 'first_name' : first_name,
+        'last_name' : last_name
+      }
+    );
   },
 
   Create(email, first_name, last_name) {
-    var data = {
-      "email" : email,
-      "first_name" : first_name,
-      "last_name" : last_name
-    };
-    return client.post(USERS_ROUTE, data);
+    return client.post(
+      USERS_ROUTE,
+      { 'email' : email,
+        'first_name' : first_name,
+        'last_name' : last_name
+      }
+    );
   },
 
   Delete(email) { 
-    var route = [USERS_ROUTE, email].join("/");
-    return client.del(route);
+    return client.del(
+      [USERS_ROUTE, email].join('/')
+    );
   },
 
   ChangePassword(email, password) {
-    var route = [USERS_ROUTE, email, "password"].join("/");
-    var data = '"' + password + '"';
-    return client.put(route, data);
+    return client.put(
+      [USERS_ROUTE, email, 'password'].join('/'),
+      "'" + password + "'"
+    );
   },
 
   DisablePassword(email) {
-    var route = [USERS_ROUTE, email, "password"].join("/");
-    return client.del(route); 
+    return client.del(
+      [USERS_ROUTE, email, 'password'].join('/')
+    );
   },
 
   CheckTwoFactorAuth(email) {
-    var route = [USERS_ROUTE, email, "two_factor"].join("/");
-    return client.get(route); 
+    return client.get(
+      [USERS_ROUTE, email, 'two_factor'].join('/')
+    );
   },
 
   DisableTwoFactorAuth(email) {
-    var route = [USERS_ROUTE, email, "password"].join("/");
-    return client.del(route); 
+    return client.del(
+      [USERS_ROUTE, email, 'password'].join('/')
+    );
+
   }
 };

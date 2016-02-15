@@ -1,0 +1,36 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Mocha Tests</title>
+  <link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
+</head>
+<body>
+  <input type="file" id="testfile">
+  <script src="../aerofsapi.js"></script>
+  <script src="../node_modules/chance/chance.js"></script>
+
+  <script>
+   aero.initialize({
+     oauth_token : '425cb418cb37454f876bced5eee4e448',
+     host_url : 'https://share.syncfs.com',
+     api_version : '1.3',
+     cache : 'false'
+   });
+
+   var inputElement = document.getElementById("testfile");
+   inputElement.addEventListener("change", handleFiles, false);
+   function handleFiles() {
+     var file = this.files[0];
+     console.log(file);
+     return aero.api.file.Create("root", chance.word())
+       .then(res => {
+         console.log(res);
+         var fid = res.data.id;
+         return aero.api.file.UploadContentFromFile(fid, file, [], 
+          (resp) => {console.log(resp)});
+       });
+   }
+
+  </script>
+</body>
+</html>

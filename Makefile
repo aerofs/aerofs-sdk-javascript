@@ -1,6 +1,6 @@
 
 OUT="aerofsapi.js"
-.PHONY : build dev clean
+.PHONY : build dev clean watch
 
 build: 
 	browserify index.js  -t [ babelify --presets [ es2015 ] ] | uglifyjs -c -m \
@@ -8,6 +8,9 @@ build:
 
 dev:
 	browserify index.js  -t [ babelify --presets [ es2015 ] ] -d -o $(OUT)
+
+watch:
+	./node_modules/.bin/watchify index.js --extension=.js -t [ babelify --presets [ es2015 ] ] -d -o aerofs.js -v
 
 clean:
 	rm $(OUT)
