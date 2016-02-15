@@ -1,23 +1,28 @@
-var client = require("./client");
-const INVITEES_ROUTE = "invitees"
+'use strict';
+
+const client = require('./client'),
+  INVITEES_ROUTE = 'invitees';
 
 module.exports = {
   Get(email) {
-    var route = [INVITEES_ROUTE,email].join("/");
-    return client.get(route);
+    return client.get(
+      [INVITEES_ROUTE,email].join('/')
+    );
   },
 
   Create(email_to, email_from) {
-    var data = {
-      "email_to" : email_to,
-      "email_from" : email_from
-    };
-    return client.post(INVITEES_ROUTE, data);
+    return client.post(
+      INVITEES_ROUTE, 
+      { 'email_to' : email_to,
+        'email_from' : email_from
+      } 
+    );
   },
 
   Delete(email) {
-    var route = [INVITEES_ROUTE,email].join("/");
-    return client.del(route);
+    return client.del(
+     [INVITEES_ROUTE,email].join('/')
+    );
   }
 
 };

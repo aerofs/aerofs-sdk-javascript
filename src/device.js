@@ -1,26 +1,30 @@
-var client = require("./client");
+'use strict';
+
+const client = require('./client');
 
 module.exports = {
   List(email) {
-    var path  = ["users", email, "devices"].join("/");
-    return client.get(path);
+    return client.get(
+      ['users', email, 'devices'].join('/')
+    );
   },
 
   Get(did) {
-    var path = ["devices", did].join("/");
-    return client.get(path);
+    return client.get(
+     ['devices', did].join('/')
+    );
   },
 
   Update(did, name) {
-    var path = ["devices", did].join("/");
-    var data = {
-      "name" : name
-    };
-    return client.put(path,data);
+    return client.put(
+      ['devices', did].join('/'),
+      { name : name }
+    );
   },
 
   Status(did) {
-    var path = ["devices", did, "status"].join("/");
-    return client.get(path);
+    return client.get(
+      ['devices', did, 'status'].join('/')
+    );
   }
 };

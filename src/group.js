@@ -1,30 +1,35 @@
-const client = require("./client");
-const util = require("./util");
-const GROUPS_ROUTE = "groups";
+'use strict';
+
+const client = require('./client'),
+  util = require('./util'),
+  GROUPS_ROUTE = 'groups';
 
 module.exports = {
   List(offset, results) {
-    var params = { 
-      "offset" : offset,
-      "results" : results
+    let params = { 
+      'offset' : offset,
+      'results' : results
     };
-    var path = util.generatePath(GROUPS_ROUTE,params);
+    let path = util.generatePath(GROUPS_ROUTE,params);
     return client.get(path);
   },
 
   Create(name) {
-    var data = {"name" : name};
-
-    return client.post(GROUPS_ROUTE, data);
+    return client.post(
+      GROUPS_ROUTE,
+      {'name' : name}
+    );
   },
 
   Get(gid) {
-    var path = [GROUPS_ROUTE, gid].join("/");
-    return client.get(path);
+    return client.get(
+      [GROUPS_ROUTE, gid].join('/')
+    );
   },
 
   Delete(gid) {
-    var path = [GROUPS_ROUTE, gid].join("/");
-    return client.get(path);
+    return client.get(
+      [GROUPS_ROUTE, gid].join('/')
+    );
   }
 };

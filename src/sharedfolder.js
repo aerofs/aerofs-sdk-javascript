@@ -1,27 +1,25 @@
-var client = require("./client");
-var SF_ROUTE = "shares";
+const client = require('./client'),
+  SF_ROUTE = 'shares';
 
 module.exports = {
-  List(email, ifNoneMatch) {
-    var route = ["users", email, SF_ROUTE].join("/");
-    var headers = { 
-      "If-None-Match" : ifNoneMatch.join(",") 
-    };
-    return client.get(route, headers); 
+  List(email, ifNoneMatch='') {
+    return client.get(
+      ['users', email, SF_ROUTE].join('/'),
+      {'if-none-match' : ifNoneMatch.join(',') }
+    );
   },
 
-  GetMetadata(id, ifNoneMatch) {
-    var route = [SF_ROUTE, id].join("/");
-    var headers = { 
-      "If-None-Match" : ifNoneMatch.join(",") 
-    };
-    return client.get(route, headers);
+  GetMetadata(id, ifNoneMatch = '') {
+    return client.get(
+      [SF_ROUTE, id].join('/'),
+      { 'if-none-match' : ifNoneMatch.join(',') }
+    );
   },
 
   Create(name) {
-    var data = {
-      "name" : name
-    };
-    return client.post(SF_ROUTE, data);
+    return client.post(
+      SF_ROUTE,
+      { name : name}
+    );
   }
 };

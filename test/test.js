@@ -12,14 +12,24 @@ const file = aero.api.file
 // CONFIG
 //
 
-const oauth = "";
-const host = "";
+const oauth = "425cb418cb37454f876bced5eee4e448";
+const host = "https://share.syncfs.com";
+const api = "1.3"
+const cache = false;
 
 describe("Setting global configuration parameters", () => {
   it("The host, oauth configuration parameters are set correctly", () => {
-    aero.initialize({host_name : host, oauth_token : oauth});
-    assert.equal(aero.config.get("host_name"), host);
-    assert.equal(aero.config.get("oauth_token"), oauth);
+    var config = {
+      host_url : host,
+      oauth_token : oauth,
+      api_version : api,
+      cache : cache,
+    };
+    aero.initialize(config);
+    assert.equal(aero.config['host_url'], host);
+    assert.equal(aero.config['oauth_token'], oauth);
+    assert.equal(aero.config['api_version'], api);
+    assert.equal(aero.config['cache'], cache);
   });
 });
 
@@ -239,6 +249,31 @@ describe("Create a new file", () => {
   });
 });
 
+describe("Create a new file and retrieve content via a HEAD request", () => {
+  it("Should create a new file and retrieve its headers", () => {
+    var fid = "";
+    var newFile = chance.word();
+  
+    return file.Create("root", newFile)
+      .then( (xhr, val) => {
+        fid = val.id;
+        var ifmatch = xhr.getResponseHeader("etag")
+        ifmatch = ifmatch.slice(3,ifmatch.length-1);
+        return file.UploadContentFromText(fid, chance.paragraph({sentences:1}), ifmatch);
+      })
+      .then( (xhr,val) => {
+        return file.GetContentHeaders(fid);
+      })
+      .then( (xhr,val) => {
+        expect(xhr.getResponseHeader("etag")).to.not.equal("");
+      })
+      .catch( (e,xhr,res) => {
+        throw [e,res];
+      });
+
+  });
+});
+
 describe("Create a new file and upload new content", () => {
   it("Should create a new file and add content", () => {
     var fid = "";
@@ -249,7 +284,7 @@ describe("Create a new file and upload new content", () => {
         fid = val.id;
         var ifmatch = xhr.getResponseHeader("etag")
         ifmatch = ifmatch.slice(3,ifmatch.length-1);
-        return file.UploadContent(fid, chance.paragraph({sentences:45000}), ifmatch);
+        return file.UploadContentFromText(fid, chance.paragraph({sentences:45000}), ifmatch);
       })
       .catch( (e,xhr,res) => {
         throw [e,res];

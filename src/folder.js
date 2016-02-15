@@ -1,52 +1,55 @@
-var client =  require("./client");
-var util = require("./util");
-var FOLDERS_ROUTE = "folders";
+'use strict';
+
+const client =  require('./client'),
+  util = require('./util'),
+  FOLDERS_ROUTE = 'folders';
 
 module.exports = {
-  GetMetadata(id, fields) {
-    var route = [FOLDERS_ROUTE, id].join("/");
-    var params = {
-      "fields" : fields
+  GetMetadata(id, fields = []) {
+    fields = fields || [];
+    let route = [FOLDERS_ROUTE, id].join('/');
+    let params = {
+      'fields' : fields.join(',')
     };
-    var path = util.generatePath(route, params);
+    let path = util.generatePath(route, params);
     return client.get(path);
   },
 
   GetPath(id) {
-    var route = [FOLDERS_ROUTE, id, "path"].join("/");
-    return client.get(route);
+    return client.get(
+      [FOLDERS_ROUTE, id, 'path'].join('/')
+    );
   }, 
 
   ListChildren(id) {
-    var route = [FOLDERS_ROUTE, id, "children"].join("/");
-    return client.get(route);
+    return client.get(
+      [FOLDERS_ROUTE, id, 'children'].join('/')
+    );
   },
 
   Create(parentName, name) {
-    var data = {
-      "parent" : parentName,
-      "name" : name
-    }; 
-    return client.post(FOLDERS_ROUTE, data);
+    return client.post(
+      FOLDERS_ROUTE,
+      { 'parent' : parentName,
+        'name' : name
+      }
+    );
   },
 
   Move(id, parentName, newName, ifMatch) {
-    var route = [FOLDERS_ROUTE, id].join("/");
-    var data = {
-      "parent" : parentName,
-      "name" : newName
-    }; 
-    var headers = {
-      "If-Match" : ifMatch
-    }; 
-    return client.put(route, data, headers);
+    return client.put(
+      [FOLDERS_ROUTE, id].join('/'),
+      { 'parent' : parentName,
+        'name' : newName
+      },
+      { 'If-Match' : ifMatch }
+    );
   },
 
   Delete(id, ifMatch) {
-    var route = [FOLDERS_ROUTE, id].join("/");
-    var headers = {
-      "If-Match" : ifMatch.join(",")
-    }; 
-    return client.del(route, headers);
+    return client.del(
+      [FOLDERS_ROUTE, id].join('/'),
+      { 'If-Match' : ifMatch.join(',')}
+    );
   }
 };

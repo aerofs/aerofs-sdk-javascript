@@ -1,36 +1,40 @@
-const client = require("./client");
-const SFG_ROUTE = "shares";
+'use strict';
+
+const client = require('./client'),
+  SFG_ROUTE = 'shares';
 
 module.exports = {
   List(sid) {
-    var path = [SFG_ROUTE, sid, "groups"].join("/");
-    return client.get(path);
+    return client.get(
+      [SFG_ROUTE, sid, 'groups'].join('/')
+    );
   },
 
   GetMetadata(sid, gid) {
-    var path = [SFG_ROUTE, sid, "members", gid].join("/");
-    return client.get(path);
+    return client.get(
+      [SFG_ROUTE, sid, 'members', gid].join('/')
+    );
   },
 
   Add(sid, gid ,permissions) {
-    var path = [SFG_ROUTE, sid, "groups"].join("/");
-    var data = {
-      "id" : gid,
-      "permissions" : permissions
-    };
-    return client.post(path, data);
+    return client.post(
+      [SFG_ROUTE, sid, 'groups'].join('/'),
+      { 'id' : gid,
+        'permissions' : permissions
+      }
+    );
   },
 
   SetPermissions(sid, gid, permissions) {
-    var path = [SFG_ROUTE, sid, "groups", gid].join("/");
-    var data = {
-      "permissions" : permissions
-    };
-    return client.put(path, data);
+    return client.put(
+      [SFG_ROUTE, sid, 'groups', gid].join('/'),
+      { permissions : permissions }
+    );
   },
 
   Remove(sid, gid) {
-    var path = [SFG_ROUTE, sid, "groups", gid].join("/");
-    return client.del(path);
+    return client.del(
+      [SFG_ROUTE, sid, 'groups', gid].join('/')
+    );
   }
 };

@@ -1,16 +1,13 @@
-const api = require("./src/api");
-const config = require("./src/config");
-const client = require("./src/client");
+const api = require('./src/api'),
+  config = require('./src/config');
 
 module.exports = global.aero = {
-  // Set the information required for communication
   initialize(options) {
-    config.set("host_name", options["host_name"]);
-    config.set("oauth_token", options["oauth_token"]);
-    config.set("suffix", "/api/v1.3/");
-    client.initialize();
+    config['api_version']  = options['api_version'];
+    config['host_url'] = options['host_url'];
+    config['oauth_token'] =  options['oauth_token'];
+    config['cache'] = options['cache'] || false;
   },
-
   config : config,
   api : api
 };

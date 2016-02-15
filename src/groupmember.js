@@ -1,26 +1,32 @@
-var client = require("./client.js");
-var GM_ROUTE = "groups";
+'use strict';
+
+const client = require('./client.js'),
+  GM_ROUTE = 'groups';
 
 module.exports = {
   List(gid) {
-    var path = [GM_ROUTE, gid, "members"].join("/");
-    return client.get(path);
+    return client.get(
+      [GM_ROUTE, gid, 'members'].join('/')
+    ); 
   },
 
   Add(gid, email) {
-    var path = [GM_ROUTE, gid, "members"].join("/");
-    var data = {"email" : email};
-    return client.post(path, data);
+    return client.post(
+      [GM_ROUTE, gid, 'members'].join('/'),
+      { email : email }
+    );
   },
   
   Get(gid, email) {
-    var path = [GM_ROUTE, gid, "members", email].join("/");
-    return client.get(path);
+    return client.get(
+      [GM_ROUTE, gid, 'members', email].join('/')
+    );
   },
 
   Remove(gid,email) {
-    var path = [GM_ROUTE, gid, "members", email].join("/");
-    return client.del(path);
+    return client.del(
+      [GM_ROUTE, gid, 'members', email].join('/')
+    );
   }
 
 };

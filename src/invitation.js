@@ -1,28 +1,33 @@
-const client = require("./client");
-const util = require("./util");
+'use strict';
+
+const client = require('./client'),
+  util = require('./util');
 
 module.exports = {
   List(email) {
-    var path = ["users", email, "invitations"].join("/");
-    return client.get(path);
+    return client.get(
+      ['users', email, 'invitations'].join('/')
+    );
   },
 
   Get(email, sid) {
-    var path = ["users", email, "invitations", sid].join("/");
-    return client.get(path);
+    return client.get(
+      ['users', email, 'invitations', sid].join('/')
+    );
   },
 
   Accept(email, sid, external) {
-    var route = ["users", email, "invitations", sid].join("/");
-    var params = {
-      "external" : external
+    let route = ['users', email, 'invitations', sid].join('/');
+    let params = {
+      'external' : external
     };
-    var path = util.generatePath(route, params);
+    let path = util.generatePath(route, params);
     return client.post(path);
   },
 
   Ignore(email, sid) {
-    var route = ["users", email, "invitations", sid].join("/");
-    return client.del(route);
+    return client.del(
+      ['users', email, 'invitations', sid].join('/')
+    );
   }
 };

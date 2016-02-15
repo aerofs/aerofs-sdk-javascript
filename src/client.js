@@ -1,51 +1,57 @@
-// This file handles communication with the AeroFS Appliance via Qwest
-const config = require("./config");
-const qwest = require("qwest");
-const util = require("./util");
+'use strict';
 
-var baseHeader = {};
+const qwest = require('qwest'),
+  urllib = require('url'),
+  config = require('./config'),
+  base_header = { 'endpoint-consistency' : 'strict'},
+  cache_methods = ['GET', 'HEAD'];
 
-// Setting the datatype to a non qwest-type prevents Qwest from
-// serializing the data
-function request(method, url, data, headers, datatype) {
-    // Add base headers
-    headers = typeof headers !== 'undefined' ? headers : {};
-    util.mergeObj(baseHeader, headers);
-    var options = {
-      headers : headers
-    };
+qwest.setDefaultDataType('json');
 
-    if (datatype) {
-      options["dataType"] = datatype;
+function request(method, path, data, headers = {}, datatype = 'json') {
+
+    let new_headers = Object.assign({},
+      base_header,
+      headers, 
+      {'authorization' : `Bearer ${config['oauth_token']}`}
+    );
+    let url = [config['host_url'],
+                'api', 
+                `v${config['api_version']}`,
+                path].join('/');
+
+    // Required to prevent qwest from autoformatting the data with default type
+    let options = { 'dataType' : datatype, headers : new_headers, };
+
+    // Cache-buster : Prevent browser from caching requests
+    if (!config['cache'] && cache_methods.indexOf(method) != -1) {
+      let urlObj = urllib.parse(url, true);
+      urlObj.query['t'] = Math.random().toString();
+      url = urllib.format(urlObj);
     }
-    // Only keep one catch statement done by the user
-    var promise = qwest.map(method, url, data, options);
-      
-    return promise;
+
+    return qwest.map(method, url, data, options);
 }
 
 module.exports = {
-  initialize() {
-    qwest.base = "https://" + config.get("host_name") + config.get("suffix");
-    qwest.setDefaultDataType("json");
-    baseHeader["Authorization"] = "Bearer " + config.get("oauth_token");
-    baseHeader["Endpoint-Consistency"] = "strict";
-  },
-   
   get(path, headers) {
-    return request("GET", path, null, headers); 
+    return request('GET', path, null, headers); 
   },
 
   put(path, data, headers) {
-    return request("PUT", path, data, headers);
+    return request('PUT', path, data, headers);
   },
 
   post(path, data, headers) {
-    return request("POST", path, data, headers); 
+    return request('POST', path, data, headers); 
   },
   
   del(path, headers) {
-    return request("DELETE", path, null, headers); 
+    return request('DELETE', path, null, headers); 
+  },
+  
+  head(path, headers) {
+    return request('HEAD', path, null, headers);
   },
 
   request : request 
