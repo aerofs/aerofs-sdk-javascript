@@ -53,7 +53,14 @@ module.exports = {
       { 'If-Match' : ifMatch }
     );
   },
- 
+
+  Delete(fid, ifMatch = []) {
+    return client.del(
+      [FILES_ROUTE, fid].join('/'),
+      { 'if-match' : ifMatch.join(',')}
+    );
+  },
+
   // Notify is a cb to send notifications on upload progress
   UploadContentFromFile(fid, file, ifMatch = [], notify = () =>{}) {
     let reader = new FileReader(),

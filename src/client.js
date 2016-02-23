@@ -7,7 +7,9 @@ const axios = require('axios').create({}),
   cache_methods = ['GET', 'HEAD'];
 
 // Counter for enqueued requests
-let pending_requests = {pending : 0};
+let pending_requests = {pending : 0},
+  outstanding_token_request = false,
+  token_request_promise;
 
 function request(method, path, headers = {}, data = "", reqType = 'application/json') {
     let ax_config = {
@@ -32,8 +34,9 @@ function request(method, path, headers = {}, data = "", reqType = 'application/j
       ax_config.url = parsed.pathname;
     }
 
-    // Monitor the number of pending requests
-    // Attempt a single retry if expire_cb is set
+    // If a request fails due to an expired/not_present token 
+    // and callback has been registered, execute that callback 
+    // to retrieve a new token
     return new Promise((resolve, reject) => {
       pending_requests.pending++;
       axios.request(ax_config)
@@ -84,5 +87,6 @@ module.exports = {
   },
   
   request : request,
-  pending_requests : pending_requests
+  pending_requests : pending_requests,
+  _axios : axios,
 }

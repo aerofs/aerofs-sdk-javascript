@@ -11,6 +11,6 @@ module.exports = {
   cache : false,
 
   // A function taking an Axios Response Body that returns
-  // a promise containing a token or throws an error.
+  // a promise resolving a token or an exception
   expire_cb : undefined
 };

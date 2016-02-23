@@ -1,6 +1,7 @@
 const api = require('./src/api'),
   config = require('./src/config'),
-  client = require('./src/client');
+  client = require('./src/client'),
+  babel_poly = require('babel-polyfill');
 
 module.exports = global.aero = {
   initialize(options) {
