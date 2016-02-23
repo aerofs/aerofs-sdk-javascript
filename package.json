@@ -1,0 +1,53 @@
+{
+  "name": "@dcardoza/aerofs-sdk-javascript",
+  "version": "1.0.0",
+  "description": "An AeroFS Private Cloud API SDK in javascript",
+  "main": "index.js",
+  "directories": {
+    "example": "examples",
+    "test": "test"
+  },
+  "dependencies": {
+    "axios": "^0.9.1"
+  },
+  "devDependencies": {
+    "axios": "^0.9.1",
+    "babel": "^6.5.1",
+    "babel-plugin-transform-object-assign": "^6.5.0",
+    "babel-polyfill": "^6.5.0",
+    "babel-preset-es2015": "^6.5.0",
+    "babel-runtime": "^6.5.0",
+    "babelify": "^7.2.0",
+    "chai": "^3.5.0",
+    "chance": "^0.8.0",
+    "jasmine": "^2.4.1",
+    "karma": "^0.13.21",
+    "karma-cli": "^0.1.2",
+    "karma-jasmine": "^0.3.7",
+    "karma-phantomjs-launcher": "^1.0.0",
+    "mocha": "^2.4.5",
+    "phantomjs": "^2.1.3",
+    "phantomjs-prebuilt": "^2.1.4",
+    "uglify-js": "^2.6.1",
+    "url": "^0.11.0",
+    "watchify": "^3.7.0"
+  },
+  "scripts": {
+    "test": "open test/testrunner.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aerofs/aerofs-sdk-javascript.git"
+  },
+  "keywords": [
+    "aerofs",
+    "api",
+    "sdk"
+  ],
+  "author": "Daniel Cardoza <daniel.cardoza@aerofs.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aerofs/aerofs-sdk-javascript/issues"
+  },
+  "homepage": "https://github.com/aerofs/aerofs-sdk-javascript#readme"
+}
