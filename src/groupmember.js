@@ -4,26 +4,26 @@ const client = require('./client.js'),
   GM_ROUTE = 'groups';
 
 module.exports = {
-  List(gid) {
+  list(gid) {
     return client.get(
       [GM_ROUTE, gid, 'members'].join('/')
     ); 
   },
 
-  Add(gid, email) {
+  add(gid, email) {
     return client.post(
       [GM_ROUTE, gid, 'members'].join('/'),
       { email : email }
     );
   },
   
-  Get(gid, email) {
+  get(gid, email) {
     return client.get(
       [GM_ROUTE, gid, 'members', email].join('/')
     );
   },
 
-  Remove(gid,email) {
+  remove(gid,email) {
     return client.del(
       [GM_ROUTE, gid, 'members', email].join('/')
     );

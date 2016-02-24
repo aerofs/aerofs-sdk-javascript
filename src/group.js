@@ -5,7 +5,7 @@ const client = require('./client'),
   GROUPS_ROUTE = 'groups';
 
 module.exports = {
-  List(offset, results) {
+  list(offset, results) {
     let params = { 
       'offset' : offset,
       'results' : results
@@ -14,20 +14,20 @@ module.exports = {
     return client.get(path);
   },
 
-  Create(name) {
+  create(name) {
     return client.post(
       GROUPS_ROUTE,
       {'name' : name}
     );
   },
 
-  Get(gid) {
+  get(gid) {
     return client.get(
       [GROUPS_ROUTE, gid].join('/')
     );
   },
 
-  Delete(gid) {
+  remove(gid) {
     return client.get(
       [GROUPS_ROUTE, gid].join('/')
     );

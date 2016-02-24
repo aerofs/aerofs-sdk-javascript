@@ -4,13 +4,13 @@ const client = require('./client'),
   INVITEES_ROUTE = 'invitees';
 
 module.exports = {
-  Get(email) {
+  get(email) {
     return client.get(
       [INVITEES_ROUTE,email].join('/')
     );
   },
 
-  Create(email_to, email_from) {
+  create(email_to, email_from) {
     return client.post(
       INVITEES_ROUTE, 
       { 'email_to' : email_to,
@@ -19,7 +19,7 @@ module.exports = {
     );
   },
 
-  Delete(email) {
+  remove(email) {
     return client.del(
      [INVITEES_ROUTE,email].join('/')
     );

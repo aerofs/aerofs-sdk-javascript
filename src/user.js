@@ -5,7 +5,7 @@ const client = require('./client'),
   USERS_ROUTE = 'users';
 
 module.exports = {
-  List(limit, after, before) {
+  list(limit, after, before) {
     limit = limit || 0;
     let params = {
       'limit' : limit.toString(),
@@ -16,13 +16,13 @@ module.exports = {
     return client.get(path);
   },
 
-  Get(email) {
+  get(email) {
     return client.get(
       [USERS_ROUTE, email].join('/')
     );
   },
 
-  Update(email, first_name, last_name) {
+  update(email, first_name, last_name) {
     return client.put(
       [USERS_ROUTE, email].join('/'),
       { 'first_name' : first_name,
@@ -31,7 +31,7 @@ module.exports = {
     );
   },
 
-  Create(email, first_name, last_name) {
+  create(email, first_name, last_name) {
     return client.post(
       USERS_ROUTE,
       { 'email' : email,
@@ -41,32 +41,32 @@ module.exports = {
     );
   },
 
-  Delete(email) { 
+  remove(email) { 
     return client.del(
       [USERS_ROUTE, email].join('/')
     );
   },
 
-  ChangePassword(email, password) {
+  changePassword(email, password) {
     return client.put(
       [USERS_ROUTE, email, 'password'].join('/'),
       "'" + password + "'"
     );
   },
 
-  DisablePassword(email) {
+  disablePassword(email) {
     return client.del(
       [USERS_ROUTE, email, 'password'].join('/')
     );
   },
 
-  CheckTwoFactorAuth(email) {
+  checkTwoFactorAuth(email) {
     return client.get(
       [USERS_ROUTE, email, 'two_factor'].join('/')
     );
   },
 
-  DisableTwoFactorAuth(email) {
+  disableTwoFactorAuth(email) {
     return client.del(
       [USERS_ROUTE, email, 'password'].join('/')
     );

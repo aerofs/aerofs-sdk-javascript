@@ -1,56 +1,103 @@
 # AeroFS SDK (Javascript)
 
-An AeroFS Private Cloud API SDK written in javascript.## Installation
+An AeroFS Private Cloud API SDK written in javascript. It is based on the API
+documented at https://developer.aerofs.com/api/en/1.3/
 
+## Installation
 ```sh
-$ npm install aerofsapi
+$ npm install aerofsapi --save
 ```
 
 ## Testing
 
-The API, SDK unit tests test against a local AeroFS Appliance. 
+The API, SDK unit tests test against a local AeroFS Appliance. There are two
+sets of tests.
 
 **Do not execute the tests against a product instance as the tests mutate
 state.**
 
-Only run if you have a setup test instance. The tests require you to do the
-following:
+#### Manual
+1. `open test/manual/testrunner.html`
+  This test runs in-browser. The page executes the tests on startup.
+  The success of each test depends on the configuration you must specify in
+  `test/manual/test.js` .
+2. `open test/manual/test_file.html`
+  This test runs in browser and tests file upload from an input widget using the
+  HTML5 file api. 
 
-* `oauth` - set the oauth variable at the top of test.js with a valid OAuth token
-* `apphost` - set the host variable to the hostname of your locla aerofs app
-
-To test, execute:
-```sh
-$ open test/testrunner.html
-```
+#### Automatic
+1. `npm test`
 
 ## Quick examples
 --------------
+Each method call returns an es6-compliant promise with a then and catch method.
 
 ```js
 var api = aero.api;
-aero.initialize({host_name : host, oauth_token : oauth});
+aero.initialize({hostName : host, oauthToken : oauth});
 
-api.user.List(123213)
-  .then( (xhr, val) => {
+// List up to 100 users
+api.user.list(100)
+  .then( (res) => {
     // Output list of users
-    console.log(val);
+    console.log(res.data);
   })
-  .catch( (e, xhr, res) => {
+  .catch( (res) => {
     // Handle error
     ...
   });
 
-api.file.Create("root", chance.word())
-  .then( (xhr, val) => {
-    console.log(val.id);
+// Create a new file in the root directory
+api.file.create('root', 'newFile')
+  .then( (res) => {
+    console.log(res.data.id);
   })
-  .catch( (e,xhr,res) => {
-    throw [e,res];
+  .catch( (res) => {
+    throw res;
   });
 ```
 
-## Basics
+## Initialization
 -------------
-Each api call will return a Promise that can be chained with a .then(...) or
-.catch(...).
+
+Prior to using the methods of the API, you must first initialize with the below
+parameters.
+
+##### aero.initialize(config)
+```js
+aero.initialize({
+  apiVersion : '1.3',
+  maxChunkSize : 65535,
+  cache : false,
+  hostUrl : 'https://mycompany.aerofs.com',
+  oauthToken : 'abcdefghijklmnopqrstuvwxyz',
+  expireCb : getNewTokenFunction,
+});
+```
+
+## Response
+-------------
+
+The library uses the Axios HTTP Library and returns the an Axios response
+documented at https://github.com/mzabriskie/axios
+
+The response is the following:
+```js
+{
+    // `data` is the response that was provided by the server
+      data: {},
+
+    // `status` is the HTTP status code from the server response
+      status: 200,
+
+    // `statusText` is the HTTP status message from the server response
+      statusText: 'OK',
+
+    // `headers` the headers that the server responded with
+      headers: {},
+
+    // `config` is the config that was provided to `axios` for
+    // the request
+      config: {}
+}
+```

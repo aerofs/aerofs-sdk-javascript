@@ -33,7 +33,8 @@
     "watchify": "^3.7.0"
   },
   "scripts": {
-    "test": "open test/testrunner.html"
+    "test-manual": "open test/testrunner.html",
+    "test": "node_modules/karma/bin/karma start test/my.conf.js"
   },
   "repository": {
     "type": "git",

@@ -3,26 +3,26 @@
 const client = require('./client');
 
 module.exports = {
-  List(email) {
+  list(email) {
     return client.get(
       ['users', email, 'devices'].join('/')
     );
   },
 
-  Get(did) {
+  get(did) {
     return client.get(
      ['devices', did].join('/')
     );
   },
 
-  Update(did, name) {
+  update(did, name) {
     return client.put(
       ['devices', did].join('/'),
       { name : name }
     );
   },
 
-  Status(did) {
+  getStatus(did) {
     return client.get(
       ['devices', did, 'status'].join('/')
     );

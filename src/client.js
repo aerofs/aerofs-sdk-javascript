@@ -3,23 +3,21 @@
 const axios = require('axios').create({}),
   urllib = require('url'),
   config = require('./config'),
-  base_header = { 'endpoint-consistency' : 'strict'},
-  cache_methods = ['GET', 'HEAD'];
+  baseHeader = { 'endpoint-consistency' : 'strict'},
+  cacheMethods = ['GET', 'HEAD'];
 
 // Counter for enqueued requests
-let pending_requests = {pending : 0},
-  outstanding_token_request = false,
-  token_request_promise;
+let pendingRequests = {pending : 0};
 
 function request(method, path, headers = {}, data = "", reqType = 'application/json') {
     let ax_config = {
       method : method,
-      baseURL : [config.host_url, 'api', `v${config.api_version}`].join('/'),
+      baseURL : [config.hostUrl, 'api', `v${config.apiVersion}`].join('/'),
       url : path,
       headers : Object.assign({},
-        base_header,
+        baseHeader,
         headers,
-        {'authorization' : `Bearer ${config.oauth_token}`,
+        {'authorization' : `Bearer ${config.oauthToken}`,
          'content-type' : reqType
         }
       ),
@@ -27,7 +25,7 @@ function request(method, path, headers = {}, data = "", reqType = 'application/j
     };
  
     // Cache-buster : Prevent browser from caching requests
-    if (!config.cache && cache_methods.indexOf(method) != -1) {
+    if (!config.cache && cacheMethods.indexOf(method) != -1) {
       let parsed = urllib.parse(path, true);
       ax_config.params = parsed.query;
       ax_config.params.t = Math.random().toString();
@@ -38,17 +36,17 @@ function request(method, path, headers = {}, data = "", reqType = 'application/j
     // and callback has been registered, execute that callback 
     // to retrieve a new token
     return new Promise((resolve, reject) => {
-      pending_requests.pending++;
+      pendingRequests.pending++;
       axios.request(ax_config)
         .then(res =>  {
           resolve(res);
         })
         .catch(res => {
-          if (res.status === 401 && config.expire_cb) {
-            config.expire_cb(res)
+          if (res.status === 401 && config.expireCb) {
+            config.expireCb(res)
               .then(token => {
-                config.oauth_token = token;
-                ax_config.headers.authorization = `Bearer ${config.oauth_token}`;
+                config.oauthToken = token;
+                ax_config.headers.authorization = `Bearer ${config.oauthToken}`;
                 resolve(axios.request(ax_config));
               })
               .catch(res2 => reject(res2));
@@ -58,11 +56,11 @@ function request(method, path, headers = {}, data = "", reqType = 'application/j
         });
     })
     .then(res => {
-      pending_requests.pending--;
+      pendingRequests.pending--;
       return res;
     })
     .catch(res => {
-      pending_requests.pending--;
+      pendingRequests.pending--;
       throw res;
     });
 }
@@ -87,6 +85,6 @@ module.exports = {
   },
   
   request : request,
-  pending_requests : pending_requests,
+  pendingRequests : pendingRequests,
   _axios : axios,
 }

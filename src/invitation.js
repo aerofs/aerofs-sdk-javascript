@@ -4,19 +4,19 @@ const client = require('./client'),
   util = require('./util');
 
 module.exports = {
-  List(email) {
+  list(email) {
     return client.get(
       ['users', email, 'invitations'].join('/')
     );
   },
 
-  Get(email, sid) {
+  get(email, sid) {
     return client.get(
       ['users', email, 'invitations', sid].join('/')
     );
   },
 
-  Accept(email, sid, external) {
+  accept(email, sid, external) {
     let route = ['users', email, 'invitations', sid].join('/');
     let params = {
       'external' : external
@@ -25,7 +25,7 @@ module.exports = {
     return client.post(path);
   },
 
-  Ignore(email, sid) {
+  ignore(email, sid) {
     return client.del(
       ['users', email, 'invitations', sid].join('/')
     );

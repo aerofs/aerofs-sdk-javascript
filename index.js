@@ -5,11 +5,12 @@ const api = require('./src/api'),
 
 module.exports = global.aero = {
   initialize(options) {
-    config.api_version = options['api_version'] || '1.3';
-    config.host_url = options['host_url'];
-    config.oauth_token =  options['oauth_token'];
+    config.apiVersion = options['apiVersion'] || '1.3';
+    config.maxChunksize = options['maxChunksize'] || Math.pow(2,16);
     config.cache = options['cache'] || false;
-    config.expire_cb = options['expire_cb'];
+    config.hostUrl = options['hostUrl'] || '';
+    config.oauthToken =  options['oauthToken'] || '';
+    config.expireCb = options['expireCb'] || undefined;
   },
   config : config,
   api : api,
