@@ -13,20 +13,21 @@ $ npm install aerofsapi --save
 The API, SDK unit tests test against a local AeroFS Appliance. There are two
 sets of tests.
 
-**Do not execute the tests against a product instance as the tests mutate
-state.**
+
 
 #### Manual
+**Do not execute the manual tests against a product instance as the tests mutate
+state.**
 1. `open test/manual/testrunner.html`
   This test runs in-browser. The page executes the tests on startup.
   The success of each test depends on the configuration you must specify in
   `test/manual/test.js` .
 2. `open test/manual/test_file.html`
   This test runs in browser and tests file upload from an input widget using the
-  HTML5 file api. 
+  HTML5 file api. The test must have an inputted configuration specified in the file itself. 
 
 #### Automatic
-1. `npm test`
+1. `npm test`. Tests upload functionaility and ensures the number of pending requests is accurate. 
 
 ## Quick examples
 --------------
@@ -64,15 +65,32 @@ Prior to using the methods of the API, you must first initialize with the below
 parameters.
 
 ##### aero.initialize(config)
+
 ```js
-aero.initialize({
+aero.initialize
+  // URL of the Aerofs Host Appliance
+  // Eg. 'https://mycompany.aerofs.com'
+  hostUrl : '',
+  
+  // OAuth token used for authentication
+  oauthToken : '',
+  
+  // Latest supported API Version
   apiVersion : '1.3',
-  maxChunkSize : 65535,
+  
+  // Whether or not to use browser cached resources
   cache : false,
-  hostUrl : 'https://mycompany.aerofs.com',
-  oauthToken : 'abcdefghijklmnopqrstuvwxyz',
-  expireCb : getNewTokenFunction,
-});
+  
+  // A function used to retrieve a new OAuth token if the
+  // current one expires. The function returns a promise.
+  //
+  // @param {axiosResponsebody}
+  // @return {promise} 
+  expireCb : undefined,
+  
+  // The maximum chunksize used when uploading file content
+  maxChunksize : Math.pow(2,16)
+};
 ```
 
 ## Response

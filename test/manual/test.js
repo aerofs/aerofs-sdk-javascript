@@ -66,9 +66,7 @@ describe('Update a user\'s first and last name', () => {
     let subject;
     return user.list(12312)
       .then( (res) => {
-        console.log(res);
         subject = res.data.data[3];
-        console.log(subject);
         return user.update(subject.email, chance.first(), chance.last()); 
       })
       .then((res) => {
@@ -108,10 +106,6 @@ describe('List all children of a folder', () => {
       });
   });
 });
-
-//
-// Invitation
-//
 
 
 // 
@@ -259,13 +253,10 @@ describe('Create a new file and retrieve content via a HEAD request', () => {
       .then( (res) => {
         fid = res.data.id;
         var ifmatch = res.headers['etag'];
-        console.log(ifmatch);
         ifmatch = ifmatch.slice(3,ifmatch.length-1);
-        console.log('upload content');
         return file.uploadContentFromText(fid, chance.paragraph({sentences:1}), ifmatch);
       })
       .then( (res) => {
-        console.log('get headers');
         return file.getContentHeaders(fid);
       })
       .then( (res) => {
@@ -294,7 +285,6 @@ describe('Create a new file, upload new content and get the content', () => {
         return file.getContent(fid);
       })
       .then( (res) => {
-        console.log(res.data);
       })
       .catch( (res) => {
         throw _error(res);

@@ -21,13 +21,11 @@
    inputElement.addEventListener('change', handleFiles, false);
    function handleFiles() {
      var file = this.files[0];
-     console.log(file);
      return aero.api.file.create('root', chance.word())
        .then(res => {
-         console.log(res);
          var fid = res.data.id;
          return aero.api.file.uploadContentFromFile(fid, file, [], 
-          (resp) => {console.log(resp)});
+          (resp) => {});
        });
    }
 

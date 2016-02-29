@@ -144,7 +144,6 @@ describe('Chunked uploads', function() {
       content = getContent(),
       notifier = { 
         notify : function(data) {
-          console.log('Progress',data.progress);
         }
       };
 
