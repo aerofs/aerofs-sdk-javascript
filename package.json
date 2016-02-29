@@ -1,5 +1,5 @@
 {
-  "name": "@dcardoza/aerofs-sdk-javascript",
+  "name": "aerofs-sdk-javascript",
   "version": "1.0.0",
   "description": "An AeroFS Private Cloud API SDK in javascript",
   "main": "index.js",
@@ -45,7 +45,7 @@
     "api",
     "sdk"
   ],
-  "author": "Daniel Cardoza <daniel.cardoza@aerofs.com>",
+  "author": "Daniel Cardoza <danielpcardoza@gmail.com>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/aerofs/aerofs-sdk-javascript/issues"
