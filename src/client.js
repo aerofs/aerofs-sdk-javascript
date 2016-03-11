@@ -23,7 +23,14 @@ function request(method, path, headers = {}, data = "", reqType = 'application/j
       ),
       data : reqType === 'application/json' ? JSON.stringify(data) : data
     };
- 
+
+    // Trim any leading or trailing whitespace from HTTP request headers
+    for (let key in ax_config.headers) {
+      if (typeof ax_config.headers[key] === 'string' ) {
+        ax_config.headers[key] = ax_config.headers[key].trim()
+      }
+    }
+
     // Cache-buster : Prevent browser from caching requests
     if (!config.cache && cacheMethods.indexOf(method) != -1) {
       let parsed = urllib.parse(path, true);
@@ -32,8 +39,8 @@ function request(method, path, headers = {}, data = "", reqType = 'application/j
       ax_config.url = parsed.pathname;
     }
 
-    // If a request fails due to an expired/not_present token 
-    // and callback has been registered, execute that callback 
+    // If a request fails due to an expired/not_present token
+    // and callback has been registered, execute that callback
     // to retrieve a new token
     return new Promise((resolve, reject) => {
       pendingRequests.pending++;
