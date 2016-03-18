@@ -21,7 +21,7 @@ module.exports = {
   invite(sid, email, permissions, note) {
     return client.post(
       [SFP_ROUTE, sid, 'pending'].join('/'),
-      { 'email' : gid,
+      { 'email' : email,
         'note' : note,
         'permissions' : permissions
       }
