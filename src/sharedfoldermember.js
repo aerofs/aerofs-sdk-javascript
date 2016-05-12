@@ -34,7 +34,7 @@ module.exports = {
     );
   },
 
-  remove(id, email, ifMatch) {
+  remove(id, email, ifMatch = []) {
     return client.del(
       [SFM_ROUTE, id, 'members', email].join('/'),
       {'If-Match' : ifMatch.join(',')}
