@@ -14,5 +14,6 @@ module.exports = {
   sfmember  : require('./sharedfoldermember'),
   sfgroupmember : require('./sharedfoldergroupmember'),
   sfpendingmember : require('./sharedfolderpendingmember'),
+  storage: require('./storage'),
   pending_requests : client.pending_requests
 };

@@ -9,9 +9,10 @@ const assert = chai.assert,
   invitee = aero.api.invitee,
   sf = aero.api.sf,
   file = aero.api.file,
-  oauth = '747706b159c84fbbbefeaa30b65a3825',
+  storage = aero.api.storage,
+  oauth = 'b2a7f8de620a47d7aecf0e64db6dddbd',
   host = 'https://share.syncfs.com',
-  api = '1.3',
+  api = '1.4',
   cache = false,
   _error = (res) => {
     return [res.status + ' ' + res.statusText, res.data]
@@ -288,6 +289,17 @@ describe('Create a new file, upload new content and get the content', () => {
       })
       .catch( (res) => {
         throw _error(res);
+      });
+  });
+});
+
+describe('Checking storage quota and usage', () => {
+  it('Should get storage quota and usage', () => {
+    return storage.get()
+      .then(res => {
+        expect(res.data).to.not.equal('');
+        expect(res.data.bytes_allowed).to.be.at.least(0);
+        expect(res.data.bytes_used).to.be.at.least(0);
       });
   });
 });

@@ -9,7 +9,7 @@ module.exports = {
   oauthToken : '',
 
   // Latest supported API Version
-  apiVersion : '1.3',
+  apiVersion : '1.4',
 
   // Whether or not to use browser cached resources
   cache : false,
